@@ -14,7 +14,8 @@ import lombok.*;
 public class Phone {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phone_seq")
+    @SequenceGenerator(name="phone_seq", sequenceName = "phone_sequence", allocationSize=1)
     private Long id;
 
     @Column(nullable = false, unique = true)

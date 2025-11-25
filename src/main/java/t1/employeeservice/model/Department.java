@@ -13,7 +13,8 @@ import lombok.*;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_seq")
+    @SequenceGenerator(name="department_seq", sequenceName = "department_sequence", allocationSize=1)
     private Long id;
 
     @Column(nullable = false, unique = true)

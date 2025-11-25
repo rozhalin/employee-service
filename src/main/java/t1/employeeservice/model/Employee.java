@@ -17,7 +17,8 @@ import java.util.HashSet;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq")
+    @SequenceGenerator(name="employee_seq", sequenceName = "employee_sequence", allocationSize=1)
     private Long id;
 
     @Column(nullable = false)
@@ -41,5 +42,5 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private HashSet<Phone> phone;
+    private HashSet<Phone> phones;
 }

@@ -6,9 +6,6 @@ import java.util.HashSet;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class EmployeeDTO {
 
     private Long id;
@@ -21,9 +18,7 @@ public class EmployeeDTO {
 
     private String position;
 
-    private String department;
-
-    private Long departmentId;
+    private DepartmentDTO department;
 
     private HashSet<PhoneDTO> phones;
 }
