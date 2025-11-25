@@ -10,9 +10,9 @@ import t1.employeeservice.model.Employee;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    Page<Employee> findAll(Pageable pageable, Sort sort);
+    //Page<Employee> findAll(Pageable pageable, Sort sort);
 
-    Employee findOneById(Long id);
+    //Employee findOneById(Long id);
 
     Page<Employee> findEmployeeByLastNameStartingWithIgnoreCase
             (String lastNamePart, Pageable pageable, Sort sort);
