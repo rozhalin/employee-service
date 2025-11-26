@@ -11,8 +11,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Page<Employee> findEmployeeByLastNameStartingWithIgnoreCase
             (String lastNamePart, Pageable pageable);
-
-    Page<Employee> findEmployeeByDepartment(String department, Pageable pageable);
-
-    Page<Employee> findEmployeeByPhoneContaining(String phone, Pageable pageable);
 }

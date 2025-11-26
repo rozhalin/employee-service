@@ -10,5 +10,5 @@ import t1.employeeservice.model.Department;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
-    Page<Department> findDepartmentByName(String name, Pageable pageable, Sort sort);
+    Page<Department> findDepartmentByName(String name, Pageable pageable);
 }
