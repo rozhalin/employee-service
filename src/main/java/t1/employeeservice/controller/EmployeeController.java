@@ -31,8 +31,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Получить карточку сотрудника",
-            description = "Получить полную информацию о сотруднике по ID")
+    @Operation(summary = "Получить инфо о сотруднике",
+            description = "Получить информацию о сотруднике по ID")
     public ResponseEntity<EmployeeDTO> getEmployee(
             @Parameter(description = "ID сотрудника")
             @PathVariable Long id) {
@@ -70,4 +70,6 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
     }
+
+    //todo getEmployeeProfile
 }

@@ -1,11 +1,13 @@
 package t1.employeeservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
@@ -37,10 +39,11 @@ public class Employee {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Department department;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private HashSet<Phone> phones;
+    private List<Phone> phones;
 }

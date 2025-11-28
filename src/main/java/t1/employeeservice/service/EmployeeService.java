@@ -15,7 +15,9 @@ import t1.employeeservice.repository.DepartmentRepository;
 import t1.employeeservice.repository.EmployeeRepository;
 import t1.employeeservice.repository.PhoneRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +56,7 @@ public class EmployeeService {
                         updateEmployeeDTO.getDepartmentId() + " not found"));
         employee.setDepartment(department);
 
-        HashSet<Phone> newPhones = new HashSet<>();
+        List<Phone> newPhones = new ArrayList<>();
         for (Long id : updateEmployeeDTO.getPhoneIds()) {
             Phone phone = phoneRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Phone with id " + id + " not found"));
@@ -75,4 +77,6 @@ public class EmployeeService {
         return employeeRepository.findEmployeeByLastNameStartingWithIgnoreCase(lastName, pageable)
                 .map(employee -> mapper.convertValue(employee, EmployeeDTO.class));
     }
+
+    //todo getEmployeeProfile
 }
