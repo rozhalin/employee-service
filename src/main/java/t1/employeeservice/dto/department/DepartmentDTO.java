@@ -1,4 +1,4 @@
-package t1.employeeservice.dto;
+package t1.employeeservice.dto.department;
 
 import lombok.Getter;
 import lombok.Setter;

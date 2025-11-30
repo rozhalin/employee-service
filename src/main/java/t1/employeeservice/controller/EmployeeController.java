@@ -9,8 +9,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import t1.employeeservice.dto.EmployeeDTO;
-import t1.employeeservice.dto.UpdateEmployeeDTO;
+import t1.employeeservice.dto.employee.CreateEmployeeDTO;
+import t1.employeeservice.dto.employee.EmployeeDTO;
+import t1.employeeservice.dto.employee.EmployeeProfileDTO;
+import t1.employeeservice.dto.employee.UpdateEmployeeDTO;
+import t1.employeeservice.dto.phone.AddPhoneDTO;
 import t1.employeeservice.service.EmployeeService;
 
 @RestController
@@ -33,9 +36,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     @Operation(summary = "Получить инфо о сотруднике",
             description = "Получить информацию о сотруднике по ID")
-    public ResponseEntity<EmployeeDTO> getEmployee(
-            @Parameter(description = "ID сотрудника")
-            @PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployee(@Parameter(description = "ID сотрудника") @PathVariable Long id) {
         return ResponseEntity.ok(employeeService.getById(id));
     }
 
@@ -49,7 +50,7 @@ public class EmployeeController {
 
     @PostMapping()
     @Operation(summary = "Создать сотрудника", description = "Создать новую карточку сотрудника")
-    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody CreateEmployeeDTO employeeDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(employeeService.createEmployee(employeeDTO));
@@ -71,5 +72,32 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
-    //todo getEmployeeProfile
+    @GetMapping("/profile/{id}")
+    @Operation(summary = "Получить карточку пользователя",
+            description = "Получить карточку пользователя с полной информацией")
+    public ResponseEntity<EmployeeProfileDTO> getEmployeeProfileDTO(
+            @Parameter(description = "ID сотрудника") @PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getEmployeeProfile(id));
+    }
+
+    @PostMapping("/phones/{id}")
+    @Operation(summary = "Добавить телефон",
+            description = "Добавить телефон пользователю по ID")
+    public ResponseEntity<EmployeeProfileDTO> addPhoneToEmployee(
+            @Parameter(description = "ID сотрудника") @PathVariable Long id,
+            @Valid @RequestBody AddPhoneDTO addPhoneDTO
+    ) {
+        return ResponseEntity.ok(employeeService.addPhoneToEmployee(id, addPhoneDTO));
+    }
+
+    @DeleteMapping("/{employeeId}/phones/{phoneId}")
+    @Operation(summary = "Удалить телефон",
+        description = "Удалить телефон у сотрудника по ID")
+    public ResponseEntity<Void> deletePhoneFromEmployee(
+            @Parameter(description = "ID сотрудника") @PathVariable Long employeeId,
+            @Parameter(description = "ID телефона") @PathVariable Long phoneId
+            ) {
+        employeeService.removePhoneFromEmployee(employeeId, phoneId);
+        return ResponseEntity.noContent().build();
+    }
 }

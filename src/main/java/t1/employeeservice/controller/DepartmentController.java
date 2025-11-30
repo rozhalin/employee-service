@@ -9,7 +9,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import t1.employeeservice.dto.DepartmentDTO;
+import t1.employeeservice.dto.department.DepartmentDTO;
+import t1.employeeservice.dto.department.UpdateDepartmentDTO;
 import t1.employeeservice.service.DepartmentService;
 
 @RestController
@@ -41,7 +42,7 @@ public class DepartmentController {
 
     @PostMapping()
     @Operation(summary = "Создать подразделение", description = "Создать новое подразделение")
-    public ResponseEntity<DepartmentDTO> createDepartment(@Valid @RequestBody DepartmentDTO departmentDTO) {
+    public ResponseEntity<DepartmentDTO> createDepartment(@Valid @RequestBody UpdateDepartmentDTO departmentDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(departmentService.createDepartment(departmentDTO));
@@ -51,7 +52,7 @@ public class DepartmentController {
     @Operation(summary = "Обновить подразделение", description = "Обновить информацию о подразделении")
     public ResponseEntity<DepartmentDTO> updateDepartment(
             @Parameter(description = "ID подразделения") @PathVariable Long id,
-            @Valid @RequestBody DepartmentDTO departmentDTO) {
+            @Valid @RequestBody UpdateDepartmentDTO departmentDTO) {
         return ResponseEntity.ok(departmentService.updateDepartment(id, departmentDTO));
     }
 

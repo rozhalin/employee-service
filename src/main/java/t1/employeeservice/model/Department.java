@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "departments")
+@Table(
+        name = "departments",
+        indexes = { @Index(name = "idx_department_name", columnList = "name") }
+)
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Department {
 
     @Id

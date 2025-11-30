@@ -20,4 +20,9 @@ public class GlobalExceptionHandler {
     public String handleNotFoundException(EntityNotFoundException ex) {
         return ex.getMessage();
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception ex) {return ex.getMessage();}
+
 }

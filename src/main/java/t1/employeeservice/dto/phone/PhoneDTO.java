@@ -1,4 +1,4 @@
-package t1.employeeservice.dto;
+package t1.employeeservice.dto.phone;
 
 import lombok.*;
 
@@ -11,4 +11,6 @@ public class PhoneDTO {
     private String number;
 
     private String type;
+
+    private Long employeeId;
 }

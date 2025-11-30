@@ -1,9 +1,11 @@
-package t1.employeeservice.dto;
+package t1.employeeservice.dto.employee;
 
 import lombok.Getter;
 import lombok.Setter;
+import t1.employeeservice.dto.department.DepartmentDTO;
+import t1.employeeservice.dto.phone.PhoneDTO;
 
-import java.util.HashSet;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,5 +23,5 @@ public class EmployeeProfileDTO {
 
     private DepartmentDTO department;
 
-    private HashSet<PhoneDTO> phones;
+    private List<PhoneDTO> phones;
 }

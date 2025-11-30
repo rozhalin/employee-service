@@ -6,16 +6,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Entity
-@Table(name = "employees")
+@Table(
+        name = "employees",
+        indexes = { @Index(name = "idx_employee_last_name", columnList = "last_name") }
+)
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Employee {
 
     @Id
@@ -46,4 +45,14 @@ public class Employee {
             orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Phone> phones;
+
+    public void addPhone(Phone phone) {
+        phones.add(phone);
+        phone.setEmployee(this);
+    }
+
+    public void removePhone(Phone phone) {
+        phones.remove(phone);
+        phone.setEmployee(null);
+    }
 }

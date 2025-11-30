@@ -1,14 +1,11 @@
-package t1.employeeservice.dto;
+package t1.employeeservice.dto.employee;
 
-import lombok.*;
-
-import java.util.HashSet;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateEmployeeDTO {
-
-    private Long id;
+public class CreateEmployeeDTO {
 
     private String lastName;
 
@@ -19,6 +16,4 @@ public class UpdateEmployeeDTO {
     private String position;
 
     private Long departmentId;
-
-    private HashSet<Long> phoneIds;
 }
