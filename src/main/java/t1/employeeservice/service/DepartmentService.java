@@ -47,6 +47,8 @@ public class DepartmentService {
     }
 
     public void deleteDepartment(Long id) {
-        departmentRepository.deleteById(id);
+        Department department = departmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Department with id " + id + " not found"));
+        departmentRepository.delete(department);
     }
 }

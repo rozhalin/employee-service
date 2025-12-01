@@ -1,6 +1,7 @@
 package t1.employeeservice.dto.phone;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

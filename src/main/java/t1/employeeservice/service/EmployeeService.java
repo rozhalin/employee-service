@@ -41,22 +41,31 @@ public class EmployeeService {
                 EmployeeDTO.class);
     }
 
+    @Transactional
     public EmployeeDTO createEmployee(CreateEmployeeDTO employeeDTO) {
         Employee employee = mapper.convertValue(employeeDTO, Employee.class);
+        Department department = mapper.convertValue(
+                departmentService.getById(employeeDTO.getDepartmentId()),
+                Department.class);
+
+        employee.setDepartment(department);
         return mapper.convertValue(employeeRepository.save(employee), EmployeeDTO.class);
     }
 
     public EmployeeDTO updateEmployee(Long employeeId, UpdateEmployeeDTO updateEmployeeDTO) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new EntityNotFoundException("Employee with id " + employeeId + " not found"));
-        employee.setFirstName(updateEmployeeDTO.getFirstName());
-        employee.setLastName(updateEmployeeDTO.getLastName());
-        employee.setPosition(updateEmployeeDTO.getPosition());
+        if (updateEmployeeDTO.getFirstName() != null) employee.setFirstName(updateEmployeeDTO.getFirstName());
+        if (updateEmployeeDTO.getLastName() != null) employee.setLastName(updateEmployeeDTO.getLastName());
+        if (updateEmployeeDTO.getPosition() != null) employee.setPosition(updateEmployeeDTO.getPosition());
+        if (updateEmployeeDTO.getMiddleName() != null) employee.setMiddleName(updateEmployeeDTO.getMiddleName());
 
-        Department department = mapper.convertValue(
-                departmentService.getById(updateEmployeeDTO.getDepartmentId()),
-                Department.class);
-        employee.setDepartment(department);
+        if (updateEmployeeDTO.getDepartmentId() != null) {
+            Department department = mapper.convertValue(
+                    departmentService.getById(updateEmployeeDTO.getDepartmentId()),
+                    Department.class);
+            employee.setDepartment(department);
+        }
 
         return mapper.convertValue(employeeRepository.save(employee), EmployeeDTO.class);
     }

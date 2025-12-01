@@ -1,7 +1,8 @@
 package t1.employeeservice.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(

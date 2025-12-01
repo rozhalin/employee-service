@@ -3,6 +3,7 @@ package t1.employeeservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -29,7 +30,8 @@ public class EmployeeController {
     @GetMapping
     @Operation(summary = "Список всех сотрудников",
             description = "Получить список всех сотрудников с сортировкой и пагинацией")
-    public ResponseEntity<Page<EmployeeDTO>> getAll(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+    public ResponseEntity<Page<EmployeeDTO>> getAll(
+            @ParameterObject @PageableDefault(size = 10, page = 0, sort = { "lastName" }) Pageable pageable) {
         return ResponseEntity.ok(employeeService.getAllEmployees(pageable));
     }
 
@@ -93,11 +95,10 @@ public class EmployeeController {
     @DeleteMapping("/{employeeId}/phones/{phoneId}")
     @Operation(summary = "Удалить телефон",
         description = "Удалить телефон у сотрудника по ID")
-    public ResponseEntity<Void> deletePhoneFromEmployee(
+    public ResponseEntity<EmployeeProfileDTO> deletePhoneFromEmployee(
             @Parameter(description = "ID сотрудника") @PathVariable Long employeeId,
             @Parameter(description = "ID телефона") @PathVariable Long phoneId
             ) {
-        employeeService.removePhoneFromEmployee(employeeId, phoneId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(employeeService.removePhoneFromEmployee(employeeId, phoneId));
     }
 }

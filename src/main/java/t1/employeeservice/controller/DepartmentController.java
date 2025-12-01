@@ -3,6 +3,7 @@ package t1.employeeservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,7 +28,7 @@ public class DepartmentController {
     @Operation(summary = "Список всех подразделений",
             description = "Получить список всех подразделений с сортировкой и пагинацией")
     public ResponseEntity<Page<DepartmentDTO>> getAllDepartments(
-            @PageableDefault(size = 10, page = 0) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 10, page = 0, sort = { "name" }) Pageable pageable) {
         return ResponseEntity.ok(departmentService.getAllDepartments(pageable));
     }
 
