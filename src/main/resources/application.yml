@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: employee-service-application
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  flyway:
+    enabled: false
+    validate-on-migrate: true
+  logging:
+    level:
+      root: debug
