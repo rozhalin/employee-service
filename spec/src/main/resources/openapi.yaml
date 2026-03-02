@@ -1,0 +1,405 @@
+openapi: 3.0.0
+info:
+  title: Employee Service
+  description: Employee Service API
+  version: 0.0.1
+
+paths:
+  /employees:
+    get:
+      summary: Получить список всех сотрудников
+      operationId: getAllEmployees
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+    post:
+      summary: Создать нового сотрудника
+      operationId: createEmployee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        201:
+          description: Сотрудник создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+
+  /employees/{id}:
+    get:
+      summary: Получить сотрудника по id
+      operationId: findEmployeeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+    put:
+      summary: Обновить сотрудника
+      operationId: updateEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        202:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+    delete:
+      summary: Удалить сотрудника
+      operationId: deleteEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Успех
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+
+  /employees/search/by-lastname:
+    get:
+      summary: Поиск сотрудников по фамилии
+      operationId: findEmployeesByLastName
+      parameters:
+        - name: lastName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+        404:
+          description: 'Ошибка: сотрудники с такой фамилией не найдены'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+
+  /employees/profile/{id}:
+    get:
+      summary: Получить карточку сотрудника
+      operationId: getEmployeeProfile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeProfile'
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+
+  /employees/phones/{id}:
+    post:
+      summary: Добавить телефон сотруднику по ID
+      operationId: addPhoneToEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+      responses:
+        202:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeProfile'
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+  /employees/{employeeId}/phones/{phoneId}:
+    delete:
+      summary: Удалить телефон у сотрудника по id
+      operationId: deletePhoneFromEmployee
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: phoneId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Успех
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+        400:
+          description: 'Ошибка: телефон сотрудника не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNotFoundError'
+  /departments:
+    get:
+      summary: Получить список всех подразделений
+      operationId: getAllDepartments
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+    post:
+      summary: Создать новое подразделение
+      operationId: createDepartment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentRequest'
+      responses:
+        201:
+          description: Подразеделение создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+
+  /departments/{id}:
+    get:
+      summary: Получить департамент по id
+      operationId: findDepartmentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        404:
+          description: 'Ошибка: департамент не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentNotFoundError'
+    put:
+      summary: Обновить департамент
+      operationId: updateDepartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentRequest'
+      responses:
+        202:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+    delete:
+      summary: Удалить департамент
+      operationId: deleteDepartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Успех
+        404:
+          description: 'Ошибка: департамент не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentNotFoundError'
+
+components:
+  schemas:
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+        lastName:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        position:
+          type: string
+        department:
+            $ref: '#/components/schemas/Department'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+
+    Department:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+
+    Phone:
+      type: object
+      properties:
+        id:
+          type: integer
+        number:
+          type: string
+        employee:
+          $ref: '#/components/schemas/Employee'
+
+    EmployeeRequest:
+      type: object
+      properties:
+        lastName:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        position:
+          type: string
+        departmentId:
+          type: integer
+
+    EmployeeNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+
+    EmployeeProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        lastName:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        position:
+          type: string
+        department:
+          $ref: '#/components/schemas/Department'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+
+    PhoneNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+
+    DepartmentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    DepartmentNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
