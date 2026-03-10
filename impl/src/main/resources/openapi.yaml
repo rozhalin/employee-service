@@ -1,0 +1,419 @@
+openapi: 3.0.0
+info:
+  title: Employee Service
+  description: Employee Service API
+  version: 0.0.1
+
+tags:
+  - name: employees
+    description: Операции с сотрудниками
+  - name: departments
+    description: Операции с отделами
+
+paths:
+  /employees:
+    get:
+      tags:
+        - employees
+      summary: Получить список всех сотрудников
+      operationId: getAllEmployees
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sizeParam'
+        - $ref: '#/components/parameters/sortParam'
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+    post:
+      tags:
+        - employees
+      summary: Создать нового сотрудника
+      operationId: createEmployee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        201:
+          description: Сотрудник создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+
+  /employees/{id}:
+    get:
+      tags:
+        - employees
+      summary: Получить сотрудника по id
+      operationId: findEmployeeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+    put:
+      tags:
+        - employees
+      summary: Обновить сотрудника
+      operationId: updateEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        202:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+    delete:
+      tags:
+        - employees
+      summary: Удалить сотрудника
+      operationId: deleteEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Успех
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+
+  /employees/search/by-lastname:
+    get:
+      tags:
+        - employees
+      summary: Поиск сотрудников по фамилии
+      operationId: findEmployeesByLastName
+      parameters:
+        - name: lastName
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sizeParam'
+        - $ref: '#/components/parameters/sortParam'
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+        404:
+          description: 'Ошибка: сотрудники с такой фамилией не найдены'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+
+  /employees/profile/{id}:
+    get:
+      tags:
+        - employees
+      summary: Получить карточку сотрудника
+      operationId: getEmployeeProfile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeProfile'
+        404:
+          description: 'Ошибка: сотрудник не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeNotFoundError'
+
+  /departments:
+    get:
+      tags:
+        - departments
+      summary: Получить список всех подразделений
+      operationId: getAllDepartments
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sizeParam'
+        - $ref: '#/components/parameters/sortParam'
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+    post:
+      tags:
+        - departments
+      summary: Создать новое подразделение
+      operationId: createDepartment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentRequest'
+      responses:
+        201:
+          description: Подразеделение создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+
+  /departments/{id}:
+    get:
+      tags:
+        - departments
+      summary: Получить департамент по id
+      operationId: findDepartmentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+        404:
+          description: 'Ошибка: департамент не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentNotFoundError'
+    put:
+      tags:
+        - departments
+      summary: Обновить департамент
+      operationId: updateDepartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentRequest'
+      responses:
+        202:
+          description: Успех
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+    delete:
+      tags:
+        - departments
+      summary: Удалить департамент
+      operationId: deleteDepartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Успех
+        404:
+          description: 'Ошибка: департамент не найден'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentNotFoundError'
+
+components:
+  schemas:
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+        lastName:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        position:
+          type: string
+        department:
+          $ref: '#/components/schemas/Department'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+
+    Department:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+
+    Phone:
+      type: object
+      properties:
+        id:
+          type: integer
+        number:
+          type: string
+        employee:
+          $ref: '#/components/schemas/Employee'
+
+    EmployeeRequest:
+      type: object
+      properties:
+        lastName:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        position:
+          type: string
+        departmentId:
+          type: integer
+
+    EmployeeNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+
+    EmployeeProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        lastName:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        position:
+          type: string
+        department:
+          $ref: '#/components/schemas/Department'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Phone'
+
+    PhoneNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+
+    DepartmentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    DepartmentNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+
+  parameters:
+    pageParam:
+      name: page
+      in: query
+      description: Page number (0-based)
+      required: false
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+
+    sizeParam:
+      name: size
+      in: query
+      description: Page size
+      required: false
+      schema:
+        type: integer
+        default: 20
+        minimum: 1
+        maximum: 100
+
+    sortParam:
+      name: sort
+      in: query
+      description: Sorting criteria in format property(,asc|desc)
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
